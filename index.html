@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Квесты для Ариши</title>
+    <style>
+        body {
+            background-color: lavender;
+            font-family: Arial, sans-serif;
+            color: #333;
+            text-align: center;
+            padding: 20px;
+        }
+        h1, h2 {
+            color: darkviolet;
+        }
+        .task {
+            margin: 30px 0;
+        }
+        .result {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            color: violet; /* Все надписи теперь фиолетовые */
+        }
+        button, input[type="range"] {
+            padding: 10px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Привет, Ариша! Выполни мои квесты!</h1>
+
+    <!-- Квест 1 -->
+    <div class="task" id="task1">
+        <h2>Квест 1: Найди правильное слово</h2>
+        <button onclick="checkAnswer('yes')">Студия YES</button>
+        <button onclick="checkAnswer('no')">Студия NO</button>
+        <button onclick="checkAnswer('maybe')">Студия MAYBE</button>
+        <button onclick="checkAnswer('inshallah')">Студия Inshallah</button>
+        <div id="result1" class="result"></div>
+    </div>
+
+    <!-- Квест 2 -->
+    <div class="task" id="task2">
+        <h2>Квест 2: Перетащи пленку в бачок</h2>
+        <div style="display: flex; justify-content: center; gap: 10px;">
+            <div id="film" draggable="true" ondragstart="drag(event)" style="width: 100px; height: 100px; background-color: #888;">🎞️ Пленка</div>
+            <div id="tank" ondrop="drop(event)" ondragover="allowDrop(event)" style="width: 100px; height: 100px; background-color: #ccc; border: 2px solid black;">🛁 Бачок</div>
+        </div>
+        <div id="result2" class="result"></div>
+    </div>
+
+    <!-- Квест 3 -->
+    <div class="task" id="task3">
+        <h2>Квест 3: Давай установим температуру</h2>
+        <input type="range" id="slider" min="0" max="100" step="1" oninput="checkTemperature()">
+        <div id="sliderValue">Температура: 0°C</div>
+        <div id="result3" class="result slider-result"></div>
+    </div>
+
+    <!-- Квест 4 -->
+    <div class="task" id="task4">
+        <h2>Квест 4: Твои навыки это:</h2>
+        <button onclick="checkStars(1)">1 звезда</button>
+        <button onclick="checkStars(2)">2 звезды</button>
+        <button onclick="checkStars(3)">3 звезды</button>
+        <button onclick="checkStars(4)">4 звезды</button>
+        <button onclick="checkStars(5)">5 звезд</button>
+        <div id="result4" class="result"></div>
+    </div>
+
+    <!-- Квест 5 -->
+    <div class="task" id="task5">
+        <h2>Квест 5: Введи правильный код (Нынешний год)</h2>
+        <button onclick="checkYear(0)">0</button>
+        <button onclick="checkYear(1)">1</button>
+        <button onclick="checkYear(2)">2</button>
+        <button onclick="checkYear(3)">3</button>
+        <button onclick="checkYear(4)">4</button>
+        <button onclick="checkYear(5)">5</button>
+        <button onclick="checkYear(6)">6</button>
+        <button onclick="checkYear(7)">7</button>
+        <button onclick="checkYear(8)">8</button>
+        <button onclick="checkYear(9)">9</button>
+        <div id="result5" class="result"></div>
+    </div>
+
+    <script>
+        // Квест 1
+        function checkAnswer(answer) {
+            if (answer === 'yes') {
+                document.getElementById('result1').innerText = "Солнце, ты потрясающий танцор, твоя плавность, твоя грация завораживают.";
+            } else {
+                document.getElementById('result1').innerText = "Попробуй снова!";
+            }
+        }
+
+        // Квест 2
+        function allowDrop(event) {
+            event.preventDefault();
+        }
+
+        function drag(event) {
+            event.dataTransfer.setData("text", event.target.id);
+        }
+
+        function drop(event) {
+            event.preventDefault();
+            var data = event.dataTransfer.getData("text");
+            if (data === "film") {
+                document.getElementById('result2').innerText = "Ариша, твои фотографии это космос!";
+            }
+        }
+
+        // Квест 3
+        function checkTemperature() {
+            const slider = document.getElementById('slider');
+            const value = slider.value;
+            document.getElementById('sliderValue').innerText = `Температура: ${value}°C`;
+            if (value == 40) {
+                document.getElementById('result3').innerText = "Вот настолько у меня поднимается температура, когда я вижу твои фотки, ты супер-модель с километровым ногами! (и безкомпромиссно охрененной жопой).";
+            }
+        }
+
+        // Квест 4
+        function checkStars(stars) {
+            if (stars === 5) {
+                document.getElementById('result4').innerText = "Вот настолько ты сможешь снимать хоряги, ты имеешь все шансы стать классным видеографом, я в тебя верю!";
+            } else {
+                document.getElementById('result4').innerText = "Попробуй снова!";
+            }
+        }
+
+        // Квест 5
+        let currentCode = '';
+        const currentYear = new Date().getFullYear().toString(); // Текущий год
+
+        function checkYear(num) {
+            currentCode += num;
+            if (currentCode.length === currentYear.length) {
+                if (currentCode === currentYear) {
+                    document.getElementById('result5').innerText = "Ариша, твой очередной супер прорывной год, с первым классом, ты чудо и большая молодец! Я тобой горжусь.";
+                } else {
+                    currentCode = '';
+                    document.getElementById('result5').innerText = "Неверный код, попробуй снова!";
+                }
+            }
+        }
+    </script>
+
+</body>
+</html>
